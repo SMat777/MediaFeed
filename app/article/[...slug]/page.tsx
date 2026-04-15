@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getArticleById } from '@/lib/guardian';
 import { formatDate } from '@/lib/utils';
 
@@ -34,6 +35,8 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
+  // Next.js deduplicerer fetch-kald med samme URL inden for én request –
+  // dette kald og kaldet i generateMetadata rammer ikke API'et to gange.
   const article = await getArticleById(idFromSlug(slug));
 
   if (!article) notFound();
@@ -63,9 +66,13 @@ export default async function ArticlePage({ params }: Props) {
       <p className="mt-2 text-sm text-gray-400">{formatDate(article.webPublicationDate)}</p>
 
       {article.fields?.thumbnail && (
-        <img
+        // priority: dette er LCP-elementet på siden – hentes straks, ikke lazy
+        <Image
           src={article.fields.thumbnail}
           alt=""
+          width={1200}
+          height={630}
+          priority
           className="mt-6 w-full rounded-xl object-cover"
         />
       )}

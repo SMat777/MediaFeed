@@ -34,6 +34,7 @@ export default async function HomePage() {
               </h2>
               {article.fields?.trailText && (
                 <p className="mt-1 text-sm text-gray-500 line-clamp-2">
+                  {/* Guardian trailText kan indeholde HTML-tags – stripes til plain text */}
                   {article.fields.trailText.replace(/<[^>]+>/g, '')}
                 </p>
               )}

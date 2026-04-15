@@ -22,7 +22,7 @@ export default async function SearchPage({ searchParams }: Props) {
     );
   }
 
-  const articles = await searchArticles(q);
+  const articles = await searchArticles(q.trim());
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { GuardianArticle } from '@/lib/guardian';
 import { formatDate } from '@/lib/utils';
 
@@ -17,9 +18,13 @@ export default function ArticleCard({ article }: Props) {
   return (
     <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
       {article.fields?.thumbnail && (
-        <img
+        // next/image: lazy loading og automatisk WebP-konvertering.
+        // Guardian-domænet er whitelistet i next.config.ts.
+        <Image
           src={article.fields.thumbnail}
           alt=""
+          width={600}
+          height={192}
           className="w-full h-48 object-cover"
         />
       )}

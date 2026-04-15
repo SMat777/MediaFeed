@@ -13,9 +13,12 @@ export function generateStaticParams() {
   }));
 }
 
+/** Kapitaliserer første bogstav – bruges til visningsnavn fra Guardian-sektionsnøgle. */
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
 export async function generateMetadata({ params }: Props) {
   const { section } = await params;
-  const label = section.charAt(0).toUpperCase() + section.slice(1);
+  const label = capitalize(section);
   return {
     title: label,
     description: `Seneste ${label}-nyheder fra Guardian`,
@@ -25,7 +28,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function CategoryPage({ params }: Props) {
   const { section } = await params;
   const articles = await getArticlesBySection(section);
-  const label = section.charAt(0).toUpperCase() + section.slice(1);
+  const label = capitalize(section);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

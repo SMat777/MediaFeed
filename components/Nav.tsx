@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import SearchBar from '@/components/SearchBar';
 
 const SECTIONS = [
   { label: 'World', slug: 'world' },
@@ -45,6 +46,7 @@ export default function Nav() {
             );
           })}
         </nav>
+        <SearchBar />
       </div>
     </header>
   );

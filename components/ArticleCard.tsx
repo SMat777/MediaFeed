@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { GuardianArticle } from '@/lib/guardian';
-import { formatDate } from '@/lib/utils';
+import { formatDate, calculateReadingTime } from '@/lib/utils';
 
 interface Props {
   article: GuardianArticle;
@@ -43,7 +43,11 @@ export default function ArticleCard({ article }: Props) {
             {article.fields.trailText.replace(/<[^>]+>/g, '')}
           </p>
         )}
-        <p className="mt-3 text-xs text-gray-400">{formatDate(article.webPublicationDate)}</p>
+        <p className="mt-3 text-xs text-gray-400">
+          {formatDate(article.webPublicationDate)}
+          <span className="mx-1.5">·</span>
+          {calculateReadingTime(article.fields?.wordcount)}
+        </p>
       </div>
     </article>
   );

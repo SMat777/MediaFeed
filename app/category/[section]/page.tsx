@@ -1,5 +1,6 @@
-import { getArticlesBySection } from '@/lib/guardian';
-import ArticleCard from '@/components/ArticleCard';
+import { getArticlesBySectionPaginated } from '@/lib/guardian';
+import { loadMoreBySection } from '@/lib/actions';
+import LoadMoreButton from '@/components/LoadMoreButton';
 
 interface Props {
   params: Promise<{ section: string }>;
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function CategoryPage({ params }: Props) {
   const { section } = await params;
-  const articles = await getArticlesBySection(section);
+  const { articles, totalPages } = await getArticlesBySectionPaginated(section);
   const label = capitalize(section);
 
   return (
@@ -36,11 +37,11 @@ export default async function CategoryPage({ params }: Props) {
       {articles.length === 0 ? (
         <p className="text-gray-500">Ingen artikler fundet i denne sektion.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((article) => (
-            <ArticleCard key={article.id} article={article} />
-          ))}
-        </div>
+        <LoadMoreButton
+          initialArticles={articles}
+          totalPages={totalPages}
+          loadMore={loadMoreBySection.bind(null, section)}
+        />
       )}
     </div>
   );

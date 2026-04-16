@@ -25,11 +25,20 @@ export interface GuardianArticle {
   };
 }
 
+/** Pagineret resultat — bruges af komponenter der har en "Vis flere"-knap. */
+export interface PaginatedResult {
+  articles: GuardianArticle[];
+  currentPage: number;
+  totalPages: number;
+}
+
 // Intern type – bruges kun til at parse Guardian API-svaret
 interface GuardianResponse {
   response: {
     status: string;
     total: number;
+    currentPage: number;
+    pages: number;
     results: GuardianArticle[];
   };
 }
@@ -65,6 +74,46 @@ export async function getArticlesBySection(
   if (!res.ok) throw new Error(`Guardian API fejl: ${res.status}`);
   const data: GuardianResponse = await res.json();
   return data.response.results;
+}
+
+/**
+ * Pagineret version af getLatestArticles.
+ * Returnerer artikler + metadata om hvilken side vi er på og hvor mange der er.
+ * Bruges af "Vis flere"-knappen til at hente næste side.
+ */
+export async function getLatestArticlesPaginated(
+  page = 1,
+  pageSize = 10
+): Promise<PaginatedResult> {
+  const url = `${BASE_URL}/search?api-key=${API_KEY}&show-fields=${LIST_FIELDS}&page-size=${pageSize}&page=${page}&order-by=newest`;
+  const res = await fetch(url, { next: { revalidate: 300 } });
+  if (!res.ok) throw new Error(`Guardian API fejl: ${res.status}`);
+  const data: GuardianResponse = await res.json();
+  return {
+    articles: data.response.results,
+    currentPage: data.response.currentPage,
+    totalPages: data.response.pages,
+  };
+}
+
+/**
+ * Pagineret version af getArticlesBySection.
+ * Bruges af "Vis flere"-knappen på kategorisider.
+ */
+export async function getArticlesBySectionPaginated(
+  section: string,
+  page = 1,
+  pageSize = 12
+): Promise<PaginatedResult> {
+  const url = `${BASE_URL}/search?api-key=${API_KEY}&show-fields=${LIST_FIELDS}&section=${section}&page-size=${pageSize}&page=${page}&order-by=newest`;
+  const res = await fetch(url, { next: { revalidate: 300 } });
+  if (!res.ok) throw new Error(`Guardian API fejl: ${res.status}`);
+  const data: GuardianResponse = await res.json();
+  return {
+    articles: data.response.results,
+    currentPage: data.response.currentPage,
+    totalPages: data.response.pages,
+  };
 }
 
 /**

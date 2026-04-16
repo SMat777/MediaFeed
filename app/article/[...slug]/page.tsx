@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getArticleById } from '@/lib/guardian';
 import { formatDate, calculateReadingTime } from '@/lib/utils';
+import RelatedArticles from '@/components/RelatedArticles';
 
 interface Props {
   params: Promise<{ slug: string[] }>;
@@ -89,6 +90,12 @@ export default async function ArticlePage({ params }: Props) {
           <p className="text-gray-400 italic">Artikelindhold ikke tilgængeligt via gratis API-plan.</p>
         )}
       </article>
+
+      {/* Relaterede artikler fra samme sektion — øger engagement og tid på siden */}
+      <RelatedArticles
+        sectionId={article.id.split('/')[0]}
+        currentArticleId={article.id}
+      />
     </div>
   );
 }

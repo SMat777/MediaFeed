@@ -82,6 +82,20 @@ export async function getArticleById(id: string): Promise<GuardianArticle | null
 }
 
 /**
+ * Henter trending artikler sorteret efter redaktionel relevans.
+ * Guardian's relevans-algoritme vægter faktorer som redaktørkuratering,
+ * aktualitet og læserengagement — modsat getLatestArticles der kun
+ * sorterer kronologisk. Giver en "Populært nu"-sektion på forsiden.
+ */
+export async function getTrendingArticles(pageSize = 5): Promise<GuardianArticle[]> {
+  const url = `${BASE_URL}/search?api-key=${API_KEY}&show-fields=${LIST_FIELDS}&page-size=${pageSize}&order-by=relevance`;
+  const res = await fetch(url, { next: { revalidate: 300 } });
+  if (!res.ok) throw new Error(`Guardian API fejl: ${res.status}`);
+  const data: GuardianResponse = await res.json();
+  return data.response.results;
+}
+
+/**
  * Fritekst-søgning mod Guardian API.
  * Ikke cachet – søgeresultater skal altid afspejle aktuelle artikler.
  */

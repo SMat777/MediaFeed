@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getArticleById } from '@/lib/guardian';
-import { formatDate } from '@/lib/utils';
+import { formatDate, calculateReadingTime } from '@/lib/utils';
 
 interface Props {
   params: Promise<{ slug: string[] }>;
@@ -63,7 +63,11 @@ export default async function ArticlePage({ params }: Props) {
         {article.webTitle}
       </h1>
 
-      <p className="mt-2 text-sm text-gray-400">{formatDate(article.webPublicationDate)}</p>
+      <p className="mt-2 text-sm text-gray-400">
+        {formatDate(article.webPublicationDate)}
+        <span className="mx-1.5">·</span>
+        {calculateReadingTime(article.fields?.wordcount)}
+      </p>
 
       {article.fields?.thumbnail && (
         // priority: dette er LCP-elementet på siden – hentes straks, ikke lazy

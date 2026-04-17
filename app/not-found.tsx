@@ -14,16 +14,16 @@ import Link from 'next/link';
 export default function NotFound() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-20 text-center">
-      <p className="text-6xl font-bold text-gray-200">404</p>
-      <h1 className="mt-4 text-2xl font-bold text-gray-900">
+      <p className="text-6xl font-bold text-decorative">404</p>
+      <h1 className="mt-4 text-2xl font-bold text-heading">
         Siden blev ikke fundet
       </h1>
-      <p className="mt-2 text-gray-500">
+      <p className="mt-2 text-muted">
         Den side du leder efter findes ikke eller er blevet flyttet.
       </p>
       <Link
         href="/"
-        className="mt-6 inline-block rounded-full bg-red-700 px-6 py-2 text-sm font-medium text-white hover:bg-red-800 transition-colors"
+        className="mt-6 inline-block rounded-full bg-accent px-6 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
       >
         Gå til forsiden
       </Link>

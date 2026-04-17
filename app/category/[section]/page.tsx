@@ -35,7 +35,7 @@ export default async function CategoryPage({ params }: Props) {
     <div className="max-w-6xl mx-auto px-4 py-10">
       <h1 className="text-3xl font-bold mb-8">{label}</h1>
       {articles.length === 0 ? (
-        <p className="text-gray-500">Ingen artikler fundet i denne sektion.</p>
+        <p className="text-muted">Ingen artikler fundet i denne sektion.</p>
       ) : (
         <LoadMoreButton
           initialArticles={articles}

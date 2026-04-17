@@ -53,7 +53,7 @@ export default function LoadMoreButton({ initialArticles, totalPages, loadMore }
           <button
             onClick={handleLoadMore}
             disabled={isPending}
-            className="rounded-full border border-gray-300 px-8 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-wait"
+            className="rounded-full border border-line-strong px-8 py-2.5 text-sm font-medium text-body hover:bg-surface-hover transition-colors disabled:opacity-50 disabled:cursor-wait"
           >
             {isPending ? 'Henter artikler...' : 'Vis flere'}
           </button>

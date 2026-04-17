@@ -25,16 +25,16 @@ export default function Error({
 }) {
   return (
     <div className="max-w-6xl mx-auto px-4 py-20 text-center">
-      <p className="text-6xl font-bold text-gray-200">Ups</p>
-      <h1 className="mt-4 text-2xl font-bold text-gray-900">
+      <p className="text-6xl font-bold text-decorative">Ups</p>
+      <h1 className="mt-4 text-2xl font-bold text-heading">
         Noget gik galt
       </h1>
-      <p className="mt-2 text-gray-500">
+      <p className="mt-2 text-muted">
         {error.message || 'En uventet fejl opstod. Prøv igen om lidt.'}
       </p>
       <button
         onClick={reset}
-        className="mt-6 inline-block rounded-full bg-red-700 px-6 py-2 text-sm font-medium text-white hover:bg-red-800 transition-colors"
+        className="mt-6 inline-block rounded-full bg-accent px-6 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
       >
         Prøv igen
       </button>

@@ -1,27 +1,71 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Aktivér dark:-prefix baseret på data-theme attribut i stedet for prefers-color-scheme */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Semantiske farvevariabler for light/dark mode.
+ *
+ * Strategi: Én sæt CSS custom properties styrer alle farver i appen.
+ * [data-theme="dark"] overskriver variablerne → alle komponenter skifter
+ * automatisk uden at hver enkelt komponent skal kende til dark mode.
+ *
+ * Tailwind eksponerer variablerne via @theme inline, så de kan bruges
+ * som utility-klasser: bg-surface, text-heading, border-line osv.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-page: #f9fafb;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f3f4f6;
+  --bg-skeleton: #e5e7eb;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+  --text-faint: #9ca3af;
+  --text-decorative: #e5e7eb;
+  --border-color: #e5e7eb;
+  --border-strong: #d1d5db;
+  --accent: #b91c1c;
+  --accent-hover: #991b1b;
+}
+
+[data-theme="dark"] {
+  --bg-page: #0a0a0a;
+  --bg-surface: #1c1c1c;
+  --bg-surface-hover: #2a2a2a;
+  --bg-skeleton: #333333;
+  --text-primary: #ededed;
+  --text-secondary: #d4d4d4;
+  --text-muted: #999999;
+  --text-faint: #666666;
+  --text-decorative: #333333;
+  --border-color: #2a2a2a;
+  --border-strong: #444444;
+  --accent: #ef4444;
+  --accent-hover: #dc2626;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-page: var(--bg-page);
+  --color-surface: var(--bg-surface);
+  --color-surface-hover: var(--bg-surface-hover);
+  --color-skeleton: var(--bg-skeleton);
+  --color-heading: var(--text-primary);
+  --color-body: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-faint: var(--text-faint);
+  --color-decorative: var(--text-decorative);
+  --color-line: var(--border-color);
+  --color-line-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg-page);
+  color: var(--text-primary);
   font-family: Arial, Helvetica, sans-serif;
 }

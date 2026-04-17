@@ -12,17 +12,27 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="da" className={`${geist.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-gray-50 text-gray-900">
-        {/* Nav er Client Component (usePathname) – resten af layout er Server Component */}
+    // suppressHydrationWarning: inline scriptet sætter data-theme før hydration,
+    // hvilket skaber en forventet mismatch mellem server-renderet og klient-DOM.
+    <html lang="da" className={`${geist.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        {/* Sætter tema FØR browseren maler indhold — forhindrer FOUC.
+            Prioritet: 1) brugerens gemte valg, 2) systemets farveindstilling. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.dataset.theme=t}catch(e){}})()`,
+          }}
+        />
+      </head>
+      <body className="min-h-full flex flex-col bg-page text-heading">
         <Nav />
         <main className="flex-1">{children}</main>
-        <footer className="bg-white border-t border-gray-200 py-6 mt-12">
-          <div className="max-w-6xl mx-auto px-4 text-sm text-gray-400 text-center">
+        <footer className="bg-surface border-t border-line py-6 mt-12">
+          <div className="max-w-6xl mx-auto px-4 text-sm text-faint text-center">
             Powered by{' '}
             <a
               href="https://open-platform.theguardian.com/"
-              className="underline hover:text-gray-600"
+              className="underline hover:text-muted"
               target="_blank"
               rel="noopener noreferrer"
             >

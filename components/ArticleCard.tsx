@@ -2,6 +2,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { GuardianArticle } from '@/lib/guardian';
 import { formatDate, calculateReadingTime } from '@/lib/utils';
+import { toBookmarkData } from '@/lib/bookmark-data';
+import BookmarkButton from '@/components/BookmarkButton';
 
 interface Props {
   article: GuardianArticle;
@@ -16,7 +18,11 @@ interface Props {
  */
 export default function ArticleCard({ article }: Props) {
   return (
-    <article className="bg-surface rounded-xl border border-line overflow-hidden hover:shadow-md transition-shadow">
+    <article className="bg-surface rounded-xl border border-line overflow-hidden hover:shadow-md transition-shadow relative">
+      <BookmarkButton
+        article={toBookmarkData(article)}
+        className="absolute top-2 right-2 z-10 bg-surface/80 backdrop-blur-sm"
+      />
       {article.fields?.thumbnail && (
         // next/image: lazy loading og automatisk WebP-konvertering.
         // Guardian-domænet er whitelistet i next.config.ts.

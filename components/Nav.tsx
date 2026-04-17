@@ -48,6 +48,19 @@ export default function Nav() {
           })}
         </nav>
         <SearchBar />
+        <Link
+          href="/bookmarks"
+          aria-label="Bogmærker"
+          className={`p-1.5 rounded-full transition-colors ${
+            pathname === '/bookmarks'
+              ? 'text-accent'
+              : 'text-muted hover:bg-surface-hover'
+          }`}
+        >
+          <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+            <path d="M4 4.5A1.5 1.5 0 0 1 5.5 3h9A1.5 1.5 0 0 1 16 4.5V18l-6-4-6 4V4.5Z" />
+          </svg>
+        </Link>
         <ThemeToggle />
       </div>
     </header>

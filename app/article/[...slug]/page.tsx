@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getArticleById } from '@/lib/guardian';
 import { formatDate, calculateReadingTime } from '@/lib/utils';
+import { toBookmarkData } from '@/lib/bookmark-data';
+import BookmarkButton from '@/components/BookmarkButton';
 import RelatedArticles from '@/components/RelatedArticles';
 
 interface Props {
@@ -64,11 +66,14 @@ export default async function ArticlePage({ params }: Props) {
         {article.webTitle}
       </h1>
 
-      <p className="mt-2 text-sm text-faint">
-        {formatDate(article.webPublicationDate)}
-        <span className="mx-1.5">·</span>
-        {calculateReadingTime(article.fields?.wordcount)}
-      </p>
+      <div className="mt-2 flex items-center gap-2 text-sm text-faint">
+        <span>
+          {formatDate(article.webPublicationDate)}
+          <span className="mx-1.5">·</span>
+          {calculateReadingTime(article.fields?.wordcount)}
+        </span>
+        <BookmarkButton article={toBookmarkData(article)} />
+      </div>
 
       {article.fields?.thumbnail && (
         // priority: dette er LCP-elementet på siden – hentes straks, ikke lazy

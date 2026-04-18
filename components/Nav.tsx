@@ -24,11 +24,13 @@ export default function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-surface border-b border-line sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 flex items-center gap-6 h-14">
-        <Link href="/" className="text-xl font-bold tracking-tight text-accent">
-          MediaFeed
+    <header className="bg-surface/90 backdrop-blur-lg border-b border-line sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 flex items-center gap-6 h-14">
+        <Link href="/" className="text-xl font-black tracking-tight">
+          <span className="text-accent">Media</span>
+          <span className="text-heading">Feed</span>
         </Link>
+        <div className="h-5 w-px bg-line" />
         <nav className="flex gap-1" aria-label="Sektioner">
           {SECTIONS.map(({ label, slug }) => {
             const isActive = pathname === `/category/${slug}`;
@@ -39,7 +41,7 @@ export default function Nav() {
                 className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                   isActive
                     ? 'bg-accent text-white'
-                    : 'text-muted hover:bg-surface-hover'
+                    : 'text-muted hover:bg-surface-hover hover:text-heading'
                 }`}
               >
                 {label}
@@ -54,7 +56,7 @@ export default function Nav() {
           className={`p-1.5 rounded-full transition-colors ${
             pathname === '/bookmarks'
               ? 'text-accent'
-              : 'text-muted hover:bg-surface-hover'
+              : 'text-muted hover:bg-surface-hover hover:text-heading'
           }`}
         >
           <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">

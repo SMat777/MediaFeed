@@ -49,13 +49,21 @@ export default function LoadMoreButton({ initialArticles, totalPages, loadMore }
       </div>
 
       {hasMore && (
-        <div className="mt-8 text-center">
+        <div className="mt-12 text-center">
           <button
             onClick={handleLoadMore}
             disabled={isPending}
-            className="rounded-full border border-line-strong px-8 py-2.5 text-sm font-medium text-body hover:bg-surface-hover transition-colors disabled:opacity-50 disabled:cursor-wait"
+            className="group rounded-full border border-line-strong px-10 py-3 text-sm font-semibold text-body hover:bg-accent hover:text-white hover:border-accent transition-all duration-300 disabled:opacity-50 disabled:cursor-wait"
           >
-            {isPending ? 'Henter artikler...' : 'Vis flere'}
+            {isPending ? (
+              <span className="flex items-center gap-2">
+                <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" opacity="0.25" />
+                  <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+                Henter artikler...
+              </span>
+            ) : 'Vis flere artikler'}
           </button>
         </div>
       )}

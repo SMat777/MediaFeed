@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getArticleById } from '@/lib/guardian';
 import { formatDate, calculateReadingTime } from '@/lib/utils';
+import { toBookmarkData } from '@/lib/bookmark-data';
+import BookmarkButton from '@/components/BookmarkButton';
 import RelatedArticles from '@/components/RelatedArticles';
 
 interface Props {
@@ -48,27 +50,30 @@ export default async function ArticlePage({ params }: Props) {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       {/* Breadcrumb */}
-      <nav className="text-sm text-gray-500 mb-6" aria-label="Brødkrumme">
+      <nav className="text-sm text-muted mb-6" aria-label="Brødkrumme">
         <Link href={`/category/${article.id.split('/')[0]}`} className="hover:underline">
           {article.sectionName}
         </Link>
         <span className="mx-2">›</span>
-        <span className="text-gray-700">{article.webTitle}</span>
+        <span className="text-body">{article.webTitle}</span>
       </nav>
 
-      <span className="text-xs font-semibold uppercase tracking-wide text-red-700">
+      <span className="text-xs font-semibold uppercase tracking-wide text-accent">
         {article.sectionName}
       </span>
 
-      <h1 className="mt-3 text-4xl font-bold leading-tight text-gray-900">
+      <h1 className="mt-3 text-4xl font-bold leading-tight text-heading">
         {article.webTitle}
       </h1>
 
-      <p className="mt-2 text-sm text-gray-400">
-        {formatDate(article.webPublicationDate)}
-        <span className="mx-1.5">·</span>
-        {calculateReadingTime(article.fields?.wordcount)}
-      </p>
+      <div className="mt-2 flex items-center gap-2 text-sm text-faint">
+        <span>
+          {formatDate(article.webPublicationDate)}
+          <span className="mx-1.5">·</span>
+          {calculateReadingTime(article.fields?.wordcount)}
+        </span>
+        <BookmarkButton article={toBookmarkData(article)} />
+      </div>
 
       {article.fields?.thumbnail && (
         // priority: dette er LCP-elementet på siden – hentes straks, ikke lazy
@@ -82,12 +87,13 @@ export default async function ArticlePage({ params }: Props) {
         />
       )}
 
-      {/* prose giver automatisk læsevenlig typografi til artikeltekst */}
-      <article className="mt-8 prose prose-lg prose-gray max-w-none">
+      {/* prose giver automatisk læsevenlig typografi til artikeltekst.
+          dark:prose-invert vender typografi-farverne i dark mode. */}
+      <article className="mt-8 prose prose-lg prose-gray dark:prose-invert max-w-none">
         {paragraphs.length > 0 ? (
           paragraphs.map((p, i) => <p key={i}>{p}</p>)
         ) : (
-          <p className="text-gray-400 italic">Artikelindhold ikke tilgængeligt via gratis API-plan.</p>
+          <p className="text-faint italic">Artikelindhold ikke tilgængeligt via gratis API-plan.</p>
         )}
       </article>
 

@@ -32,7 +32,7 @@ export default function SearchBar() {
       onChange={(e) => setQuery(e.target.value)}
       placeholder="Søg artikler..."
       aria-label="Søg"
-      className="ml-auto w-48 rounded-full border border-gray-200 px-3 py-1 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-300"
+      className="ml-auto w-48 rounded-full border border-line bg-surface px-3 py-1 text-sm text-body placeholder-faint focus:outline-none focus:ring-2 focus:ring-red-300"
     />
   );
 }

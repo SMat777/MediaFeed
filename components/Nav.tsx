@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import SearchBar from '@/components/SearchBar';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const SECTIONS = [
   { label: 'World', slug: 'world' },
@@ -13,7 +14,7 @@ const SECTIONS = [
 ];
 
 /**
- * Topnavigation med sektionslinks.
+ * Topnavigation med sektionslinks og dark mode toggle.
  * Markerer aktiv sektion baseret på URL-pathname.
  *
  * Kræver 'use client' fordi usePathname() kun virker i Client Components.
@@ -23,9 +24,9 @@ export default function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-surface border-b border-line sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 flex items-center gap-6 h-14">
-        <Link href="/" className="text-xl font-bold tracking-tight text-red-700">
+        <Link href="/" className="text-xl font-bold tracking-tight text-accent">
           MediaFeed
         </Link>
         <nav className="flex gap-1" aria-label="Sektioner">
@@ -37,8 +38,8 @@ export default function Nav() {
                 href={`/category/${slug}`}
                 className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-red-700 text-white'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-accent text-white'
+                    : 'text-muted hover:bg-surface-hover'
                 }`}
               >
                 {label}
@@ -47,6 +48,20 @@ export default function Nav() {
           })}
         </nav>
         <SearchBar />
+        <Link
+          href="/bookmarks"
+          aria-label="Bogmærker"
+          className={`p-1.5 rounded-full transition-colors ${
+            pathname === '/bookmarks'
+              ? 'text-accent'
+              : 'text-muted hover:bg-surface-hover'
+          }`}
+        >
+          <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+            <path d="M4 4.5A1.5 1.5 0 0 1 5.5 3h9A1.5 1.5 0 0 1 16 4.5V18l-6-4-6 4V4.5Z" />
+          </svg>
+        </Link>
+        <ThemeToggle />
       </div>
     </header>
   );

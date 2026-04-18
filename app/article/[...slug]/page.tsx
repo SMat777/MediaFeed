@@ -44,64 +44,77 @@ export default async function ArticlePage({ params }: Props) {
 
   if (!article) notFound();
 
-  // bodyText er plain text – splittes på linjeskift til afsnit
-  const paragraphs = article.fields?.bodyText?.split('\n').filter(Boolean) ?? [];
-
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
-      {/* Breadcrumb */}
-      <nav className="text-sm text-muted mb-6" aria-label="Brødkrumme">
-        <Link href={`/category/${article.id.split('/')[0]}`} className="hover:underline">
-          {article.sectionName}
-        </Link>
-        <span className="mx-2">›</span>
-        <span className="text-body">{article.webTitle}</span>
-      </nav>
-
-      <span className="text-xs font-semibold uppercase tracking-wide text-accent">
-        {article.sectionName}
-      </span>
-
-      <h1 className="mt-3 text-4xl font-bold leading-tight text-heading">
-        {article.webTitle}
-      </h1>
-
-      <div className="mt-2 flex items-center gap-2 text-sm text-faint">
-        <span>
-          {formatDate(article.webPublicationDate)}
-          <span className="mx-1.5">·</span>
-          {calculateReadingTime(article.fields?.wordcount)}
-        </span>
-        <BookmarkButton article={toBookmarkData(article)} />
-      </div>
-
+    <>
+      {/* Full-width hero-billede */}
       {article.fields?.thumbnail && (
-        // priority: dette er LCP-elementet på siden – hentes straks, ikke lazy
-        <Image
-          src={article.fields.thumbnail}
-          alt=""
-          width={1200}
-          height={630}
-          priority
-          className="mt-6 w-full rounded-xl object-cover"
-        />
+        <div className="relative w-full max-h-[28rem] overflow-hidden bg-skeleton">
+          <Image
+            src={article.fields.thumbnail}
+            alt=""
+            width={1600}
+            height={900}
+            priority
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-page" />
+        </div>
       )}
 
-      {/* prose giver automatisk læsevenlig typografi til artikeltekst.
-          dark:prose-invert vender typografi-farverne i dark mode. */}
-      <article className="mt-8 prose prose-lg prose-gray dark:prose-invert max-w-none">
-        {paragraphs.length > 0 ? (
-          paragraphs.map((p, i) => <p key={i}>{p}</p>)
-        ) : (
-          <p className="text-faint italic">Artikelindhold ikke tilgængeligt via gratis API-plan.</p>
-        )}
-      </article>
+      <div className={`max-w-3xl mx-auto px-4 relative z-10 ${article.fields?.thumbnail ? '-mt-16' : 'pt-12'}`}>
+        {/* Breadcrumb */}
+        <nav className="text-sm text-muted mb-6" aria-label="Brødkrumme">
+          <Link href="/" className="hover:text-accent transition-colors">Forside</Link>
+          <span className="mx-2 text-faint">›</span>
+          <Link href={`/category/${article.id.split('/')[0]}`} className="hover:text-accent transition-colors">
+            {article.sectionName}
+          </Link>
+        </nav>
 
-      {/* Relaterede artikler fra samme sektion — øger engagement og tid på siden */}
-      <RelatedArticles
-        sectionId={article.id.split('/')[0]}
-        currentArticleId={article.id}
-      />
-    </div>
+        {/* Sektionsbadge */}
+        <span className="inline-block text-[11px] font-bold uppercase tracking-widest text-accent">
+          {article.sectionName}
+        </span>
+
+        {/* Titel */}
+        <h1 className="mt-3 text-3xl sm:text-4xl lg:text-[2.75rem] font-bold leading-[1.15] text-heading">
+          {article.webTitle}
+        </h1>
+
+        {/* Trail text som undertitel */}
+        {article.fields?.trailText && (
+          <p className="mt-4 text-lg sm:text-xl text-muted leading-relaxed">
+            {article.fields.trailText.replace(/<[^>]+>/g, '')}
+          </p>
+        )}
+
+        {/* Meta-bar */}
+        <div className="mt-6 flex items-center gap-4 py-4 border-y border-line">
+          <span className="text-sm text-faint">
+            {formatDate(article.webPublicationDate)}
+          </span>
+          <span className="text-faint">·</span>
+          <span className="text-sm text-faint">
+            {calculateReadingTime(article.fields?.wordcount)} læsetid
+          </span>
+          <BookmarkButton article={toBookmarkData(article)} className="ml-auto" />
+        </div>
+
+        {/* Artikeltekst — HTML fra Guardian API med prose-styling */}
+        <article className="mt-10 prose prose-lg dark:prose-invert max-w-none prose-headings:text-heading prose-headings:font-bold prose-headings:leading-tight prose-p:text-body prose-p:leading-[1.8] prose-a:text-accent prose-a:underline prose-a:decoration-accent/30 hover:prose-a:decoration-accent prose-blockquote:border-l-accent prose-blockquote:text-muted prose-blockquote:not-italic prose-strong:text-heading prose-img:rounded-xl prose-li:text-body prose-li:leading-[1.8] prose-hr:border-line">
+          {article.fields?.body ? (
+            <div dangerouslySetInnerHTML={{ __html: article.fields.body }} />
+          ) : (
+            <p className="text-faint italic">Artikelindhold ikke tilgængeligt via gratis API-plan.</p>
+          )}
+        </article>
+
+        {/* Relaterede artikler fra samme sektion */}
+        <RelatedArticles
+          sectionId={article.id.split('/')[0]}
+          currentArticleId={article.id}
+        />
+      </div>
+    </>
   );
 }

@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
     // Tillader Guardian API-billeder via next/image (lazy loading + WebP-optimering)
     remotePatterns: [
       {
-        protocol: 'https',
         hostname: 'media.guim.co.uk',
       },
     ],

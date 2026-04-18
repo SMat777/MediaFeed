@@ -20,7 +20,8 @@ export interface GuardianArticle {
   fields?: {
     thumbnail?: string;
     trailText?: string; // Kan indeholde HTML-tags
-    bodyText?: string;  // Fuld artikeltekst – kun hentet ved detailvisning
+    body?: string;      // HTML artikeltekst – kun hentet ved detailvisning
+    bodyText?: string;  // Plain text – bruges af bogmærker
     wordcount?: string;
   };
 }
@@ -47,7 +48,7 @@ interface GuardianResponse {
 const LIST_FIELDS = 'thumbnail,trailText,wordcount';
 
 // Felter der hentes til detailvisning – inkl. fuld brødtekst
-const DETAIL_FIELDS = 'thumbnail,trailText,bodyText,wordcount';
+const DETAIL_FIELDS = 'thumbnail,trailText,body,wordcount';
 
 /**
  * Henter de nyeste artikler på tværs af alle sektioner.

@@ -32,8 +32,8 @@ export default async function CategoryPage({ params }: Props) {
   const label = capitalize(section);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-8">{label}</h1>
+    <div className="max-w-7xl mx-auto px-4 py-10">
+      <h1 className="text-2xl font-bold mb-8 text-heading">{label}</h1>
       {articles.length === 0 ? (
         <p className="text-muted">Ingen artikler fundet i denne sektion.</p>
       ) : (

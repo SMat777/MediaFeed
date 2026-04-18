@@ -16,7 +16,7 @@ export default async function SearchPage({ searchParams }: Props) {
   // Ingen søgeord – vis opfordring til at søge
   if (!q?.trim()) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-20 text-center text-faint">
+      <div className="max-w-7xl mx-auto px-4 py-20 text-center text-faint">
         Begynd at skrive i søgefeltet øverst for at finde artikler.
       </div>
     );
@@ -25,7 +25,7 @@ export default async function SearchPage({ searchParams }: Props) {
   const articles = await searchArticles(q.trim());
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
+    <div className="max-w-7xl mx-auto px-4 py-10">
       <h1 className="text-3xl font-bold mb-2">Søgeresultater</h1>
       <p className="text-muted mb-8">
         {articles.length} {articles.length === 1 ? 'resultat' : 'resultater'} for &ldquo;{q}&rdquo;

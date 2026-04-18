@@ -18,42 +18,44 @@ interface Props {
  */
 export default function ArticleCard({ article }: Props) {
   return (
-    <article className="bg-surface rounded-xl border border-line overflow-hidden hover:shadow-md transition-shadow relative">
+    <article className="group bg-surface rounded-2xl border border-line overflow-hidden hover:shadow-xl hover:shadow-black/5 hover:border-line-strong hover:-translate-y-0.5 transition-all duration-300 ease-out relative flex flex-col">
       <BookmarkButton
         article={toBookmarkData(article)}
-        className="absolute top-2 right-2 z-10 bg-surface/80 backdrop-blur-sm"
+        className="absolute top-3 right-3 z-10 bg-surface/80 backdrop-blur-sm rounded-full shadow-sm"
       />
       {article.fields?.thumbnail && (
-        // next/image: lazy loading og automatisk WebP-konvertering.
-        // Guardian-domænet er whitelistet i next.config.ts.
-        <Image
-          src={article.fields.thumbnail}
-          alt=""
-          width={600}
-          height={192}
-          className="w-full h-48 object-cover"
-        />
+        <div className="overflow-hidden aspect-[16/10]">
+          <Image
+            src={article.fields.thumbnail}
+            alt=""
+            width={600}
+            height={375}
+            className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          />
+        </div>
       )}
-      <div className="p-4">
-        <span className="text-xs font-semibold uppercase tracking-wide text-accent">
+      <div className="p-5 flex flex-col flex-1">
+        <span className="text-[11px] font-bold uppercase tracking-widest text-accent">
           {article.sectionName}
         </span>
-        <h2 className="mt-2 text-base font-semibold leading-snug line-clamp-3">
-          <Link href={`/article/${article.id}`} className="hover:underline">
+        <h2 className="mt-2 text-lg font-bold leading-snug line-clamp-3 text-heading">
+          <Link href={`/article/${article.id}`} className="hover:text-accent transition-colors">
             {article.webTitle}
           </Link>
         </h2>
         {article.fields?.trailText && (
-          <p className="mt-1 text-sm text-muted line-clamp-2">
-            {/* Guardian trailText kan indeholde HTML-tags – stripes til plain text */}
+          <p className="mt-2 text-sm text-muted leading-relaxed line-clamp-2">
             {article.fields.trailText.replace(/<[^>]+>/g, '')}
           </p>
         )}
-        <p className="mt-3 text-xs text-faint">
-          {formatDate(article.webPublicationDate)}
-          <span className="mx-1.5">·</span>
-          {calculateReadingTime(article.fields?.wordcount)}
-        </p>
+        <div className="mt-auto pt-4">
+          <div className="h-px bg-line mb-3" />
+          <p className="text-xs text-faint">
+            {formatDate(article.webPublicationDate)}
+            <span className="mx-1.5">·</span>
+            {calculateReadingTime(article.fields?.wordcount)}
+          </p>
+        </div>
       </div>
     </article>
   );
